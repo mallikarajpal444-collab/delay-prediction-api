@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: delay-prediction-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn predict_api:app --host 0.0.0.0 --port $PORT
+    plan: free
+    autoDeploy: true
