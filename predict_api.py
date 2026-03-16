@@ -45,14 +45,19 @@ def predict(input_data: PredictionInput):
 
     model = get_model()
 
-    values = list(input_data.data.values())
-    arr = np.array([values])
+    data = input_data.data
+
+    arr = np.array([[
+        data["distance"],
+        data["carrier_rating"],
+        data["traffic_index"],
+        data["weather_risk"],
+        data["port_congestion"]
+    ]])
 
     prediction = model.predict(arr)[0]
 
-    return {
-        "predicted_delay_minutes": float(prediction)
-    }
+    return {"predicted_delay_minutes": float(prediction)}
 
 
 @app.get("/")
