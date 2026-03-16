@@ -1,0 +1,22 @@
+warehouse_id;warehouse_name;city;warehouse_type;total_docks;operating_hours_start;operating_hours_end;avg_loading_time_minutes;average_dispatch_delay;congestion_score;warehouse_status;warehouse_congestion_score
+WH-SIL-01;Siliguri Hub;Siliguri;Crossdock;10;08:00;22:00;46;17;53;Active;0,35
+WH-RAN-01;Ranchi Hub;Ranchi;Plant;4;08:00;22:00;70;26;79;Active;0,91
+WH-BHU-01;Bhubaneswar Hub;Bhubaneswar;DC;11;08:00;22:00;32;20;82;Active;0,65
+WH-LUC-01;Lucknow Hub;Lucknow;Crossdock;12;08:00;22:00;68;5;33;Active;0,72
+WH-JAI-01;Jaipur Hub;Jaipur;Crossdock;7;08:00;22:00;55;34;44;Active;0,86
+WH-AHM-01;Ahmedabad Hub;Ahmedabad;Crossdock;4;08:00;22:00;52;39;38;Active;0,67
+WH-PUN-01;Pune Hub;Pune;Crossdock;14;08:00;22:00;26;21;69;Active;0,42
+WH-MYS-01;Mysore Hub;Mysore;Plant;11;08:00;22:00;29;25;50;Active;0,28
+WH-GUW-01;Guwahati Hub;Guwahati;Crossdock;12;08:00;22:00;46;38;72;Active;0,54
+WH-MUM-01;Mumbai Hub;Mumbai;DC;14;08:00;22:00;42;14;62;Active;0,36
+WH-BAN-01;Bangalore Hub;Bangalore;Crossdock;7;08:00;22:00;43;27;45;Active;0,51
+WH-PAT-01;Patna Hub;Patna;Crossdock;4;08:00;22:00;25;9;43;Active;0,86
+WH-SUR-01;Surat Hub;Surat;DC;8;08:00;22:00;42;38;85;Active;0,44
+WH-NAG-01;Nagpur Hub;Nagpur;DC;9;08:00;22:00;56;28;32;Active;0,29
+WH-VIZ-01;Vizag Hub;Vizag;Crossdock;9;08:00;22:00;31;23;73;Active;0,47
+WH-KOL-01;Kolkata Hub;Kolkata;DC;11;08:00;22:00;69;33;44;Active;0,88
+WH-CHE-01;Chennai Hub;Chennai;Plant;8;08:00;22:00;37;24;62;Active;0,4
+WH-COI-01;Coimbatore Hub;Coimbatore;Plant;12;08:00;22:00;43;31;60;Active;0,69
+WH-DEL-01;Delhi Hub;Delhi;Crossdock;5;08:00;22:00;63;19;58;Active;0,2
+WH-IND-01;Indore Hub;Indore;Plant;13;08:00;22:00;35;40;84;Active;0,46
+WH-HYD-01;Hyderabad Hub;Hyderabad;Plant;6;08:00;22:00;36;30;81;Active;0,43
