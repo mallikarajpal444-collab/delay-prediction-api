@@ -12,6 +12,8 @@ app = FastAPI(title="Delay Prediction API")
 MODEL_URL = "https://huggingface.co/malli18/delay/resolve/main/delay_model.pkl"
 MODEL_PATH = "delay_model.pkl"
 
+model = None
+
 
 def download_file(url, path):
     if not os.path.exists(path):
@@ -24,11 +26,14 @@ def download_file(url, path):
         print(f"{path} downloaded. Size:", os.path.getsize(path))
 
 
-# Ensure model exists
-download_file(MODEL_URL, MODEL_PATH)
-
-# Load model
-model = pickle.load(open(MODEL_PATH, "rb"))
+def get_model():
+    global model
+    if model is None:
+        download_file(MODEL_URL, MODEL_PATH)
+        print("Loading model...")
+        with open(MODEL_PATH, "rb") as f:
+            model = pickle.load(f)
+    return model
 
 
 class PredictionInput(BaseModel):
@@ -38,10 +43,10 @@ class PredictionInput(BaseModel):
 @app.post("/predict")
 def predict(input_data: PredictionInput):
 
-    data = input_data.data
+    model = get_model()
 
-    # convert dict values → numpy array
-    arr = np.array([list(data.values())])
+    values = list(input_data.data.values())
+    arr = np.array([values])
 
     prediction = model.predict(arr)[0]
 
