@@ -1,49 +1,39 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-import pickle
+import joblib
 import numpy as np
 from typing import Dict
-import requests
 import os
 import uvicorn
 
 app = FastAPI(title="Delay Prediction API")
 
-MODEL_URL = "https://huggingface.co/malli18/delay/resolve/main/delay_model.pkl"
-MODEL_PATH = "delay_model.pkl"
+# -------------------------
+# Local model path
+# -------------------------
 
-model = None
+MODEL_PATH = "delay_model.joblib"
 
+if not os.path.exists(MODEL_PATH):
+    raise FileNotFoundError("delay_model.joblib not found in project directory")
 
-def download_file(url, path):
-    if not os.path.exists(path):
-        print(f"Downloading {path}...")
-        r = requests.get(url, stream=True)
-        with open(path, "wb") as f:
-            for chunk in r.iter_content(chunk_size=8192):
-                if chunk:
-                    f.write(chunk)
-        print(f"{path} downloaded. Size:", os.path.getsize(path))
+print("Loading model...")
+model = joblib.load(MODEL_PATH)
+print("Model loaded successfully")
 
-
-def get_model():
-    global model
-    if model is None:
-        download_file(MODEL_URL, MODEL_PATH)
-        print("Loading model...")
-        with open(MODEL_PATH, "rb") as f:
-            model = pickle.load(f)
-    return model
-
+# -------------------------
+# Request schema
+# -------------------------
 
 class PredictionInput(BaseModel):
     data: Dict[str, float]
 
+# -------------------------
+# Prediction endpoint
+# -------------------------
 
 @app.post("/predict")
 def predict(input_data: PredictionInput):
-
-    model = get_model()
 
     data = input_data.data
 
@@ -59,11 +49,17 @@ def predict(input_data: PredictionInput):
 
     return {"predicted_delay_minutes": float(prediction)}
 
+# -------------------------
+# Health check
+# -------------------------
 
 @app.get("/")
 def health():
     return {"status": "running"}
 
+# -------------------------
+# Run server
+# -------------------------
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5000)
