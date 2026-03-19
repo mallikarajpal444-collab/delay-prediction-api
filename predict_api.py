@@ -3,30 +3,30 @@ from pydantic import BaseModel
 import joblib
 import numpy as np
 from typing import Dict
-import os
-import uvicorn
 
 app = FastAPI(title="Delay Prediction API")
 
 # -------------------------
-# Local model path
+# Lazy load model
 # -------------------------
 
-MODEL_PATH = "delay_model.joblib"
+model = None
 
-if not os.path.exists(MODEL_PATH):
-    raise FileNotFoundError("delay_model.joblib not found in project directory")
+def get_model():
+    global model
+    if model is None:
+        print("Loading model...")
+        model = joblib.load("delay_model.joblib")
+    return model
 
-print("Loading model...")
-model = joblib.load(MODEL_PATH)
-print("Model loaded successfully")
 
 # -------------------------
-# Request schema
+# Input schema
 # -------------------------
 
 class PredictionInput(BaseModel):
     data: Dict[str, float]
+
 
 # -------------------------
 # Prediction endpoint
@@ -35,19 +35,22 @@ class PredictionInput(BaseModel):
 @app.post("/predict")
 def predict(input_data: PredictionInput):
 
+    model = get_model()
+
     data = input_data.data
 
-    arr = np.array([[
+    arr = [[
         data["distance"],
         data["carrier_rating"],
         data["traffic_index"],
         data["weather_risk"],
         data["port_congestion"]
-    ]])
+    ]]
 
     prediction = model.predict(arr)[0]
 
     return {"predicted_delay_minutes": float(prediction)}
+
 
 # -------------------------
 # Health check
@@ -56,10 +59,3 @@ def predict(input_data: PredictionInput):
 @app.get("/")
 def health():
     return {"status": "running"}
-
-# -------------------------
-# Run server
-# -------------------------
-
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=5000)
